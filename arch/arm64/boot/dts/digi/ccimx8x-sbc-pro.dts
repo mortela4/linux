@@ -53,7 +53,7 @@
 &adc0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_adc0>;
-	digi,adc-ch-list = <0>;
+	digi,adc-ch-list = <0 1>;
 	status = "okay";
 };
 
@@ -93,52 +93,26 @@
 	status = "okay";
 };
 
-/*
- * CAN0
- * Conflicts with LPUART0 RTS/CTS lines.
- * Before enabling the port you need to configure
- * lpuart0 node as 2 wires.
- */
-&flexcan1 {
-	status = "disabled";
-};
-
-/* CAN1 on expansion header */
-&flexcan2 {
-	status = "okay";
-};
-
-/*
- * CAN2 on expansion header.
- * Conflicts with LPUART3 RX/TX lines.
- */
-&flexcan3 {
-	status = "okay";
-};
 
 &gpu_3d0 {
 	status = "okay";
 };
 
+
 /*
- * I2C3 connected to Audio codec and USB 3.0 PD PHY.
- * Also available on:
- * - Expansion header
- * - PCIe connector
- * - Parallel Camera connector
- */
+ * I2C3 connected to MCP23018 GPIO-expander. */
 &i2c3 {
 	status = "okay";
 };
 
-/* MIPI-CSI0 I2C available on MIPI Camera connector */
+
+/********************************** MIPI-CSI0 camera interface controls (via I2C0): **************************************/
 &i2c_mipi_csi0 {
 	status = "okay";
 };
 
-/* MIPI-DSI0 I2C available on LVDS0 connector */
 &i2c0_mipi_lvds0 {
-	status = "okay";
+	status = "okay";	/* MIPI-DSI0 I2C available on LVDS0 connector --> NOT in use! ELO-touchscreen use USB, not I2C!! */
 };
 
 &imx8_gpu_ss {
@@ -181,10 +155,12 @@
 	status = "okay";
 };
 
+/********************************** MIPI-DSI0 (LVDS-)display serial interface: **************************************/
 &lvds0 {
 	status = "okay";
 };
 
+/* NOTE: this is ONLY for use of PWM-output, controlling backlight intensity on ELO panel! */
 &lvds_backlight0 {
 	status = "okay";
 };
@@ -193,82 +169,15 @@
 	status = "okay";
 };
 
+/* This is the actual PWM interface for backlight: */
 &pwm_mipi_lvds0 {
 	status = "okay";
 };
 
-/*
- * The max98089 sound codec uses the same I2C address than the fusion touch
- * controller, so when unconmmenting this node you need to also comment the
- * max98089 node.
- */
-//&fusion_touch {
-//	status = "okay";
-//};
 
-/*
- * On the CC8X SBC, an inconsistent reset sequence makes
- * the Goodix display's touch controller respond to two I2C
- * addresses: 0x14 and 0x5D. To make sure the touchscreen
- * works every time, the touch controller's description must
- * be duplicated for both addresses.
- */
-&lvds0_goodix_touch1 {
-	status = "okay";
-};
 
-&lvds0_goodix_touch2 {
-	status = "okay";
-};
-
-/*
- * Uncomment to enable display support on the 2nd video interface.
- */
-/* MIPI-DSI1 I2C available on LVDS1 connector */
-//&i2c0_mipi_lvds1 {
-//	status = "okay";
-//};
-//
-//&ldb2 {
-//	status = "okay";
-//};
-//
-//&ldb2_phy {
-//	status = "okay";
-//};
-//
-//&lvds1 {
-//	status = "okay";
-//};
-//
-//&lvds_backlight1 {
-//	status = "okay";
-//};
-//
-//&pwm_mipi_lvds1 {
-//	status = "okay";
-//};
-//
-//&lvds1_goodix_touch1 {
-//	status = "okay";
-//	/*
-//	 * Uncomment if LVDS0 is also enabled so that the LVDS1 touch works in
-//	 * extended desktop configuration
-//	 */
-//	extends-desktop = <&lvds0>;
-//};
-//
-//&lvds1_goodix_touch2 {
-//	status = "okay";
-//	/*
-//	 * Uncomment if LVDS0 is also enabled so that the LVDS1 touch works in
-//	 * extended desktop configuration
-//	 */
-//	extends-desktop = <&lvds0>;
-//};
-
-/* LPSPI0 on expansion header */
-&lpspi0 {
+/* LPSPI2 - used for Tricolor-LED control (via SPIDEV-node), only using SCK and SDO signals! */
+&lpspi2 {
 	assigned-clock-rates = <60000000>;
 	status = "okay";
 
@@ -278,101 +187,70 @@
 	 */
 	spidev@0 {
 		compatible = "spidev";
-		reg = <0>;
+		reg = <0>;				// Will be associated with 'CS0' ChipSelect. reg=<1> is 'CS1' etc.
 		spi-max-frequency = <4000000>;
 	};
-
-/*  Uncomment to add a second SPI slave device controlled by CS 1 */
-//	spidev@1 {
-//		compatible = "spidev";
-//		reg = <1>;
-//		spi-max-frequency = <4000000>;
-//	};
 };
 
-/* LPUART0 on expansion header */
+
+/* LPSPI3 - used for NFC-reader communication and control (via SPIDEV-node), using CS0 signal. */
+&lpspi3 {
+	assigned-clock-rates = <60000000>;
+	status = "okay";
+
+	/* NFC controlled via SPIDEV userspace-driver (a.t.m.) */
+	spidev@0 {
+		compatible = "spidev";
+		reg = <0>;				// Will be associated with 'CS0' ChipSelect. reg=<1> is 'CS1' etc.
+		spi-max-frequency = <4000000>;
+	};
+};
+
+
+/* LPUART0 (not in use a.t.m. - but Tx/Rx-pads available). */
 &lpuart0 {
-	/* RTS/CTS lines multiplexed with CAN0 */
-	pinctrl-0 = <&pinctrl_lpuart0_4wires>;
-	/* Comment the line above and uncomment the next one to use 2-wires */
-	//pinctrl-0 = <&pinctrl_lpuart0_2wires>;
+	/* Only TxD and RxD signals available - no RTC/CTS - so 2-wire interface used: */
+	pinctrl-0 = <&pinctrl_lpuart0_2wires>;
 	status = "okay";
 };
+
 
 /* Console */
 &lpuart2 {
 	status = "okay";
 };
 
+
+/********************** MCA UARTs. Assign the IO pins (see bindings) and change status to 'okay' *******************/
+
+/* TO BE ASSESSED - no use of MCA-UARTs a.t.m.(???) */
 /*
- * LPUART3 on expansion header.
- * Conflicts with CAN2.
- */
-&lpuart3 {
+&mca_uart {
 	status = "disabled";
 };
 
-/* Audio support */
-&asrc0 {
-	status = "okay";
-};
 
-&sai0 {
-	status = "okay";
-};
-
-&max98089 {
-	status = "okay";
-};
-
-&sound_max98089 {
-	status = "okay";
-};
-
-/*
- * Uncomment to enable MCA ADC channels on Expansion connector:
- *  - MCA_IO7 (channel 7)
- *  - MCA_IO8 (channel 8)
- *  - MCA_IO14 (channel 14)
- * Edit adc-ch-list to include the ADC channels that you want to enable.
- */
-// &mca_adc {
-//	digi,adc-ch-list = <7 8 14>;
-//	digi,adc-vref = <3000000>;
-// };
-
-/*
- * Uncomment to Enable Tamper detection. There are 2 digital (0 and 1) and 2
- * analog (2 and 3) tamper interfaces.
- */
-//&mca_tamper {
-//	digi,tamper-if-list = <0 1 2 3>;
-//};
-
-&mca_uart {
-	status = "okay";
-};
-
-/* Assign the IO pins (see bindings) and change status to okay */
 &mca_uart0 {
 	iopins-names = "rx", "tx";
 	iopins = <9 10>;
 	status = "disabled";
 };
 
-/* Assign the IO pins (see bindings) and change status to okay */
+
 &mca_uart1 {
 	iopins-names = "rx", "tx";
 	iopins = <11 16>;
 	status = "disabled";
 };
 
-/* UART connected to XBee socket */
+
 &mca_uart2 {
 	iopins-names = "rx", "tx", "cts", "rts";
 	iopins = <2 1 3 4>;
-	status = "okay";
+	status = "disabled";
 };
+*/
+
 
 /* Power LED on MCA_IO13 */
 &mca_led {
@@ -389,44 +267,16 @@
 	};
 };
 
+
 &irqsteer_csi0 {
 	status = "okay";
 };
 
-/*
- * Enable only if the parallel camera is physically connected.
- * If not, the MIPI camera may not work.
- * Similarly, if the MIPI camera is not physically connected you need to
- * disable the MIPI (mipi_csi_0) so that the parallel camera works.
- */
-//&parallel_csi {
-//       status = "okay";
-//};
 
-//&ov5640 {
-//	status = "okay";
-//};
-
-/* MIPI camera */
-&mipi_csi_0 {
-	status = "okay";
-};
-
-&ov5640_mipi {
-	status = "okay";
-};
+/********************************** USB section *****************************************/
 
 /* USB_OTG1 connected to the usb hub */
 &usbotg1 {
-	status = "okay";
-};
-
-/* USB_OTG2/USB_SS3 */
-&usbotg3 {
-	status = "okay";
-};
-
-&usbphy1 {
 	status = "okay";
 };
 
@@ -434,10 +284,31 @@
 	status = "okay";
 };
 
-/* Micro SD card */
+
+/* USB_OTG2/USB_SS3 is NOT used! */
+/*
+&usbotg3 {
+	dr_mode = "host";
+	maximum-speed = "high-speed";
+	hnp-disable;
+	srp-disable;
+	adp-disable;
+	status = "okay";    // Originally - this was only setting here (enabling AFTER .dtsi-file loaded).
+};
+
+
+&usb3phynop1 {
+	status = "okay";
+};
+*/
+
+
+
+/************************** Micro SD card ***************************/
 &usdhc2 {
 	status = "okay";
 };
+
 
 &vpu_decoder {
 	status = "okay";
@@ -447,7 +318,24 @@
 	status = "okay";
 };
 
-/* IOMUX */
+
+
+/************************************** IOMUX (settings for digital GPIO that are NOT claimed by drivers) *****************************************/
+/*
+IOMUXC
+------
+Pad-mux control register controls the IOMUX of the given pad(=pin).
+Bit[29:27] represents the 'mux_control' field.
+E.g. the mask is as follows for MUX<n> setting:
+MUX0 = 0x00000000
+MUX1 = 0x08000000
+MUX2 = 0x10000000
+MUX3 = 0x18000000
+MUX4 = 0x20000000 --> pinmux=4 : LSGPIO setting (if available)
+MUX5 = 0x28000000
+MUX6 = 0x30000000
+MUX7 = 0x38000000
+*/
 &iomuxc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_expansion>;
@@ -455,60 +343,120 @@
 	/* Expansion Connector */
 	pinctrl_expansion: expansiongrp {
 		fsl,pins = <
-			/*
-			 * Comment the pads you wish to use on any
-			 * device driver, and uncomment the ones you
-			 * want to use as GPIO (requires disabling the
-			 * driver that manages them).
-			 */
-			/* GPIO4_20 */
-			IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20		0x06000020
-			/* GPIO4_21 */
-			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21			0x06000020
-			/* SPI0_IRQ_N */
-			IMX8QXP_SPI2_SDO_LSIO_GPIO1_IO01			0x06000020
-			/* EXP_I2C_IRQ_N */
-			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15		0x06000020
-			/* EXP_I2C_GPIO */
-			IMX8QXP_QSPI0A_SS0_B_LSIO_GPIO3_IO14		0x06000020
-			/* GPIO4_19 */
-			IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19		0x06000020
-			/* GPIO0_12 */
-			IMX8QXP_SPDIF0_EXT_CLK_LSIO_GPIO0_IO12		0x06000020
-			/* GPIO5_09 */
-			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09	0x06000020
-
-			/* Remove the pads you wish to use as ADCs */
-			/* ADC_IN0 */
-	//		IMX8QXP_ADC_IN0_LSIO_GPIO1_IO10			0x06000020
-			/* ADC_IN1 */
-			IMX8QXP_ADC_IN1_LSIO_GPIO1_IO09			0x06000020
-			/* M40_UART_RX */
-			IMX8QXP_ADC_IN2_LSIO_GPIO1_IO12			0x06000020
-			/* M40_UART_TX */
-			IMX8QXP_ADC_IN3_LSIO_GPIO1_IO11			0x06000020
-			/* ADC_IN4 */
-			IMX8QXP_ADC_IN4_LSIO_GPIO1_IO14			0x06000020
-			/* ADC_IN5 */
-			IMX8QXP_ADC_IN5_LSIO_GPIO1_IO13			0x06000020
+			/************ MUX0 (ADC0) select-signals **************/
+			/* IO4.31 */
+			IMX8QXP_ENET0_RGMII_TXD0_LSIO_GPIO4_IO31    0x26000060
+			/* IO5.0 */
+			IMX8QXP_ENET0_RGMII_TXD1_LSIO_GPIO5_IO00    0x26000060
+			/* IO5.1 */
+			IMX8QXP_ENET0_RGMII_TXD2_LSIO_GPIO5_IO01    0x26000060
+			/* IO5.2 */
+			IMX8QXP_ENET0_RGMII_TXD3_LSIO_GPIO5_IO02    0x26000060
+			
+			/************ MUX1 (ADC1) select-signals **************/
+			/* IO4.29 */
+			IMX8QXP_ENET0_RGMII_TXC_LSIO_GPIO4_IO29         0x26000060
+			/* IO4.30 */
+			IMX8QXP_ENET0_RGMII_TX_CTL_LSIO_GPIO4_IO30      0x26000060
+			/* IO5.4 */
+			IMX8QXP_ENET0_RGMII_RX_CTL_LSIO_GPIO5_IO04      0x26000060
+			/* IO5.3 */
+			IMX8QXP_ENET0_RGMII_RXC_LSIO_GPIO5_IO03         0x26000060
+			
+			/************ Outlet_A Relays ************************/
+			/* IO3.16 */
+			IMX8QXP_QSPI0A_SCLK_LSIO_GPIO3_IO16             0x26000060
+			/* IO1.19 */
+			IMX8QXP_FLEXCAN2_RX_LSIO_GPIO1_IO19             0x26000060
+			/* IO1.20 */
+			IMX8QXP_FLEXCAN2_TX_LSIO_GPIO1_IO20             0x26000060
+			/* IO1.17 */
+			IMX8QXP_FLEXCAN1_RX_LSIO_GPIO1_IO17             0x26000060
+			/* IO1.18 */
+			IMX8QXP_FLEXCAN1_TX_LSIO_GPIO1_IO18             0x26000060
+			/* IO1.15 */
+			IMX8QXP_FLEXCAN0_RX_LSIO_GPIO1_IO15             0x26000060
+			/* IO1.16 */
+			IMX8QXP_FLEXCAN0_TX_LSIO_GPIO1_IO16             0x26000060
+			/* IO0.19 */
+			IMX8QXP_MCLK_IN0_LSIO_GPIO0_IO19                0x26000060
+			
+			/**************** Outlet_B Relays ********************/
+			/* IO3.14 */
+			IMX8QXP_QSPI0A_SS0_B_LSIO_GPIO3_IO14            0x26000060
+			/* IO5.5 */
+			IMX8QXP_ENET0_RGMII_RXD0_LSIO_GPIO5_IO05        0x26000060
+			/* IO5.6 */
+			IMX8QXP_ENET0_RGMII_RXD1_LSIO_GPIO5_IO06        0x26000060
+			/* IO5.7 */
+			IMX8QXP_ENET0_RGMII_TXD0_LSIO_GPIO4_IO31        0x26000060
+			/* IO5.8 */
+			IMX8QXP_ENET0_RGMII_RXD3_LSIO_GPIO5_IO08        0x26000060
+			/* IO5.9 */
+			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09   0x26000060
+			/* IO5.10 */
+			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	  0x26000060
+			/* IO5.11 */
+			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x26000060
+			
+			/*************** EXT-outlet Relay control ******************/
+            		/* 'S_Ex_contact_control' = IO1.31 */
+			IMX8QXP_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO31      0x26000060
+			
+			/*************** Board sensors --> probably belongs in DTSI-file *************************/
+			/* INT_ACC = IO9.2 --> MCA_IO2 */
+			/* INT_TEMP = IO9.3 --> MCA_IO3 */
+			
+			/*************** Backlight controls --> probably belongs in DTSI-file *************************/
+			/* BACKLIGHT_FAULT = IO9.4 --> MCA_IO4 */
+			    
+			/*************** Outlet_A alarms *************************/
+			/* AC_ALARM_A = IO9.9 --> MCA_IO9 */
+			/* DC_ALARM_A = IO9.10 --> MCA_IO10 */
+            		/*************** Outlet_B alarms *************************/
+			/* AC_ALARM_B = IO9.9 --> MCA_IO9 */
+			/* DC_ALARM_B = IO9.10 --> MCA_IO10 */
+			
+			/*************** MCP23018 GPIO-expander control --> probably belongs in DTSI-file *************************/
+			/* RESET_MCP_io_expander = IO3.15 */
+			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15        0x26000060
+			
+			/***************** Tricolor-LED Control **********************/
+			/* 'LED_CLK' = IO4.19 */
+			IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19      0x26000060
+			/* 'LED_SDO' = IO4.20 */
+			IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20      0x26000060
+			
+			/***************** USB --> probably belongs in DTSI-file **********************/
+			/* 'USB_EN' = IO1.28 */
+			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28  0x26000060
+			/* 'USB_RESET' = IO3.13 */
+			IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13          0x26000060
+			 
+            		/***************** LTE-modem --> probably belongs in DTSI-file **********************/
+            		/* 'nDisable_LTE_SHDN' ('nDISABLE'?) = IO2.0 */
+			//IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00    0x26000060
+			
+			/********************** NFC --> probably belongs in DTSI-file (??) NOT USED IN VER.1 !! *******************************/
+			/* 'NFC_POWER_TX' = IO1.29 */
+			IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29    0x26000060
+			/* 'POWER_ON_NFC' = IO1.30 */
+			IMX8QXP_MIPI_DSI1_I2C0_SDA_LSIO_GPIO1_IO30    0x26000060
+			/* 'NFC_IRQ_IN' = IO4.22 */
+			IMX8QXP_USDHC1_CD_B_LSIO_GPIO4_IO22           0x26000060
+			/* 'NFC_IRQ_OUT' = MCA_IO1 = GPIO9_1 --> need NOT be part of DTS as long as userspace controls it! */
 		>;
 	};
 
-	/* Uncomment the pads you wish to use as ADCs */
+	/* i.MX8X internal (12-bit, Vref=1.8V) ADC. Uncomment the pads you wish to use as ADC-inputs: */
 	pinctrl_adc0: adc0grp {
 		fsl,pins = <
 			/* ADC_IN0 */
 			IMX8QXP_ADC_IN0_ADMA_ADC_IN0		0xc0000060
-	//		/* ADC_IN1 */
-	//		IMX8QXP_ADC_IN1_ADMA_ADC_IN1		0xc0000060
-	//		/* M40_UART_RX */
-	//		IMX8QXP_ADC_IN2_ADMA_ADC_IN2		0xc0000060
-	//		/* M40_UART_TX */
-	//		IMX8QXP_ADC_IN3_ADMA_ADC_IN3		0xc0000060
-	//		/* ADC_IN4 */
-	//		IMX8QXP_ADC_IN4_ADMA_ADC_IN4		0xc0000060
-	//		/* ADC_IN5 */
-	//		IMX8QXP_ADC_IN5_ADMA_ADC_IN5		0xc0000060
+			/* ADC_IN1 */
+			IMX8QXP_ADC_IN1_ADMA_ADC_IN1		0xc0000060
 		>;
 	};
 };
+
+
