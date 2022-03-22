@@ -204,8 +204,8 @@
 	pinctrl-0 = <&pinctrl_lpi2c3>;
 	status = "disabled";
 	
-	/* Microchip MCP23018 16-bit GPIO-expander connected to I2C3 bus on address=0x20 : */
-	piom1: gpio@20 {
+	/* Microchip MCP23018 16-bit GPIO-expander connected to I2C3 bus on address=0x27 ('ADDR'-pin connected to Vcc=3.3V --> effective address = 0x20 + 0x07) : */
+	piom1: gpio@27 {
 		compatible = "microchip,mcp23018";      /* REF: "Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt" in kernel source. */
 		gpio-controller;
 		#gpio-cells = <2>;                      /* NOTE: 2x GPIO-entities --> will end up as 'gpiochip10' and 'gpiochip11'. */
