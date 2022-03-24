@@ -210,7 +210,7 @@
 		gpio-controller;
 		#gpio-cells = <2>;                          /* NOTE: 2x GPIO-entities --> will end up as 'gpiochip10' and 'gpiochip11'. */
 		reg = <0x27>;                               /* NOTE: I2C-addess of MCP23018 0x20 + <ADDR-pin setting>, with ADD-pin=Vcc=3.3V, this becomes 0x7 and addr = 0x20 + 0x7 = 0x27 */
-		reset-gpios = <&gpio3 15 GPIO_ACTIVE_LOW>;  
+		reset-gpios = <&lsio_gpio3 15 GPIO_ACTIVE_LOW>;  
 		/*
 		interrupt-parent = <&gpio1>;                NOTE: IRQs from MCP23018 are NOT used! (a.t.m.)
 		interrupts = <17 IRQ_TYPE_LEVEL_LOW>;       This setting would mean GPIO1.17 were used as IRQ-input on i.MX8X.
