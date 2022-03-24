@@ -199,17 +199,18 @@
 &i2c3 {
 	#address-cells = <1>;
 	#size-cells = <0>;
-	clock-frequency = <100000>;
+	clock-frequency = <100000>;                     /* TODO: assess - could possibly be raised to 400000??? */
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpi2c3>;
 	status = "disabled";
 	
 	/* Microchip MCP23018 16-bit GPIO-expander connected to I2C3 bus on address=0x27 ('ADDR'-pin connected to Vcc=3.3V --> effective address = 0x20 + 0x07) : */
 	piom1: gpio@27 {
-		compatible = "microchip,mcp23018";      /* REF: "Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt" in kernel source. */
+		compatible = "microchip,mcp23018";          /* REF: "Documentation/devicetree/bindings/pinctrl/pinctrl-mcp23s08.txt" in kernel source. */
 		gpio-controller;
-		#gpio-cells = <2>;                      /* NOTE: 2x GPIO-entities --> will end up as 'gpiochip10' and 'gpiochip11'. */
-		reg = <0x20>;                           /* NOTE: internal registers of MCP23018 occupies reg-size = 0x20 = 32 bytes */
+		#gpio-cells = <2>;                          /* NOTE: 2x GPIO-entities --> will end up as 'gpiochip10' and 'gpiochip11'. */
+		reg = <0x27>;                               /* NOTE: I2C-addess of MCP23018 0x20 + <ADDR-pin setting>, with ADD-pin=Vcc=3.3V, this becomes 0x7 and addr = 0x20 + 0x7 = 0x27 */
+		reset-gpios = <&gpio3 15 GPIO_ACTIVE_LOW>;  
 		/*
 		interrupt-parent = <&gpio1>;                NOTE: IRQs from MCP23018 are NOT used! (a.t.m.)
 		interrupts = <17 IRQ_TYPE_LEVEL_LOW>;       This setting would mean GPIO1.17 were used as IRQ-input on i.MX8X.
@@ -511,12 +512,14 @@
 		>;
 	};
 
+    /*
 	pinctrl_reg_3v3_usb_sw: reg_3v3_usb_sw_grp {
 		fsl,pins = <
-			// GPIO4_5 USB3 switch power enable */
-			// MX8QXP_USB_SS3_TC2_LSIO_GPIO4_IO05	0x06000020   // NOT used for WICC!
+			// GPIO4_5 USB3 switch power enable
+			MX8QXP_USB_SS3_TC2_LSIO_GPIO4_IO05	0x06000020   // NOT used for WICC!
 		>;
 	};
+	*/
 
 	pinctrl_usbotg1: usbotg1grp {
 		fsl,pins = <
