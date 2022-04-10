@@ -218,7 +218,16 @@
 		#interrupt-cells=<2>;                       2x IRQs from MCP23018 --> 'INTA' and 'INTB', one for each GPIO-bank respectively (GPIOA<n>, GPIOB<n>).
 		microchip,irq-mirror;
 		*/
-    	};
+		pinctrl-0 = <&gpio23018pullups>;
+        /* Pull-up on EVERY pin: */
+        gpio23018pullups: pinmux {
+            pins = "gpio0", "gpio1", "gpio2", "gpio3",
+            "gpio4", "gpio5", "gpio6", "gpio7",
+            "gpio8", "gpio9", "gpio10", "gpio11",
+            "gpio12", "gpio13", "gpio14", "gpio15";
+            bias-pull-up;
+        };
+	};
 };
 
 
