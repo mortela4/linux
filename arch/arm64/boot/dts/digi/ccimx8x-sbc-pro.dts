@@ -400,7 +400,7 @@ MUX7 = 0x38000000
 			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x26000060
 			
 			/*************** EXT-outlet Relay control ******************/
-            		/* 'S_Ex_contact_control' = IO1.31 */
+            /* 'S_Ex_contact_control' = IO1.31 */
 			IMX8QXP_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO31      0x26000060
 			
 			/*************** Board sensors --> probably belongs in DTSI-file *************************/
@@ -413,7 +413,8 @@ MUX7 = 0x38000000
 			/*************** Outlet_A alarms *************************/
 			/* AC_ALARM_A = IO9.9 --> MCA_IO9 */
 			/* DC_ALARM_A = IO9.10 --> MCA_IO10 */
-            		/*************** Outlet_B alarms *************************/
+			
+            /*************** Outlet_B alarms *************************/
 			/* AC_ALARM_B = IO9.9 --> MCA_IO9 */
 			/* DC_ALARM_B = IO9.10 --> MCA_IO10 */
 			
@@ -423,9 +424,9 @@ MUX7 = 0x38000000
 			
 			/***************** Tricolor-LED Control **********************/
 			/* 'LED_CLK' = IO4.19 */
-			IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19      0x26000060
+			// IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19      0x26000060           /* NOTE: set up as SPI2 clock ('SCK')! GPIO bit-bang NOT used!! */
 			/* 'LED_SDO' = IO4.20 */
-			IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20      0x26000060
+			// IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20      0x26000060           /* NOTE: set up as SPI2 'DOUT'! GPIO bit-bang NOT used!! */
 			
 			/***************** USB --> probably belongs in DTSI-file **********************/
 			/* 'USB_EN' = IO1.28 */

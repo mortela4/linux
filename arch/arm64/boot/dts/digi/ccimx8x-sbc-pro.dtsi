@@ -444,7 +444,7 @@
 
 /* IOMUX - setup for peripherals: */
 &iomuxc {
-	/* SPI2 pin-muxing --> used for tricolor-LED control. (pinmux=2) */
+	/* SPI2 pin-muxing --> used for tricolor-LED control. (pinmux=2) NOTE: neither SDI-signal nor ChipSelects are available! */
 	pinctrl_lpspi2: lpspi2grp {
 		fsl,pins = <
 			IMX8QXP_USDHC1_RESET_B_ADMA_SPI2_SCK	0x1600004c
@@ -452,7 +452,7 @@
 		>;
 	};
 	
-    	/* SPI3 pin-multiplexing --> used for NFC-transceiver interfacing. pinmux=0 for all I/Os used. NOTE: only 'SCK' and 'SDO' signals used!! */
+    	/* SPI3 pin-multiplexing --> used for NFC-transceiver interfacing. pinmux=0 for all I/Os used. */
 	pinctrl_lpspi3: lpspi3grp {
 		fsl,pins = <
 			IMX8QXP_SPI3_SCK_ADMA_SPI3_SCK	0x0600004c
