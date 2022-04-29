@@ -434,8 +434,8 @@ MUX7 = 0x38000000
 			/* 'USB_RESET' = IO3.13 */
 			IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13          0x26000060
 			 
-            		/***************** LTE-modem --> probably belongs in DTSI-file **********************/
-            		/* 'nDisable_LTE_SHDN' ('nDISABLE'?) = IO2.0 */
+            /***************** LTE-modem --> probably belongs in DTSI-file **********************/
+            /* 'nDisable_LTE_SHDN' ('nDISABLE'?) = IO2.0 */
 			//IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00    0x26000060
 			
 			/********************** NFC --> probably belongs in DTSI-file (??) NOT USED IN VER.1 !! *******************************/
