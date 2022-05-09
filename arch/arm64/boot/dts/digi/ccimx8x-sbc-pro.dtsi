@@ -452,7 +452,7 @@
 		>;
 	};
 	
-    	/* SPI3 pin-multiplexing --> used for NFC-transceiver interfacing. pinmux=0 for all I/Os used. */
+    /* SPI3 pin-multiplexing --> used for NFC-transceiver interfacing. pinmux=0 for all I/Os used. */
 	pinctrl_lpspi3: lpspi3grp {
 		fsl,pins = <
 			IMX8QXP_SPI3_SCK_ADMA_SPI3_SCK	0x0600004c
@@ -464,8 +464,8 @@
 	
 	pinctrl_lpuart0_2wires: lpuart0grp_2wires {
 		fsl,pins = <
-			IMX8QXP_SCU_GPIO0_01_M40_UART0_TX		0x16000020	/* Alternative: IMX8QXP_SCU_GPIO0_01_SCU_UART0_TX --> pinmux=1 */
-			IMX8QXP_SCU_GPIO0_00_M40_UART0_RX		0x16000020	/* Alternative: IMX8QXP_SCU_GPIO0_00_SCU_UART0_RX --> pinmux=1 */
+			IMX8QXP_UART0_TX_ADMA_UART0_TX		0x06000020	/* Pinmux = 0. */
+			IMX8QXP_UART0_RX_ADMA_UART0_RX		0x06000020	/* Pinmux = 0. */
 		>;
 	};
 
