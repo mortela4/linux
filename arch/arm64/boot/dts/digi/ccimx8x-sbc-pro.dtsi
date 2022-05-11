@@ -519,7 +519,7 @@
 	pinctrl_reg_3v3_usb_hub: reg_3v3_usb_hub_grp {
 		fsl,pins = <
 			/* GPIO1_28 (MUX=ALT4) is USB hub power enable, 'USB_EN' (= 'USB_PWR_EN') */
-			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28		0x26000020              
+			//IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28		0x26000020              
 		>;
 	};
 
@@ -535,7 +535,7 @@
 	pinctrl_usbotg1: usbotg1grp {
 		fsl,pins = <
 			/* USB hub reset (MUX=ALT4) is GPIO3_13. */
-			IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13		0x26000020
+			//IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13		0x26000020
 		>;
 	};
 
