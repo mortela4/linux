@@ -490,13 +490,13 @@
 		>;
 	};
 
-	/* PCIE (Mini Card) */
+	/* PCIE (Mini Card) --> nDISABLE = IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00  w. IOMUX=0x26000060 */
 	pinctrl_pcieb_mini_card: pcieagrp_mini_card {
 		fsl,pins = <
 			/* PCIE_RESET_N */
 			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21		0x26000021    /* GPIO4_21 in ALT4-mode --> unchanged from BaseUnit design. */
 			/* PCIE_DIS_N */
-			IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00	0x26000061     /* GPIO2_0 in ALT4-mode --> unchanged from BaseUnit design. */
+			IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00	0x26000021     /* Was: 0x26000061. GPIO2_0 in ALT4-mode --> unchanged from BaseUnit design. */
 			/* PCIE_WAKE_N --> */
 			IMX8QXP_SCU_GPIO0_01_SCU_GPIO0_IO01		0x04000021     /* GPIO0_1 in ALT0-mode --> unchanged from BaseUnit design. */
 		>;
@@ -505,15 +505,13 @@
 	/* TODO: check if vreg for PCIe is used at all! (WiFi internally??) */
 	pinctrl_reg_3v3_pcie: reg_3v3_pcie_grp {
 		/* Used to be GPIO4_22 - but this is used for 'NFC_IRQ_IN' signal. */
-		
-		pins = <&piom1 15 1>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
+		fsl,pins = <&piom1 15 1>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
 	};
 
 
 	pinctrl_reg_3v3_pcie_sleep: reg_3v3_pcie_sleep_grp {
 		/* Used to be GPIO4_22 (with different PAD-setting) - but this is used for 'NFC_IRQ_IN' signal. */
-		
-		pins = <&piom1 15 0>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
+		fsl,pins = <&piom1 15 0>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
 	};
 
     /******************** USB ***********************/

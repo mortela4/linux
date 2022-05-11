@@ -395,7 +395,7 @@ MUX7 = 0x38000000
 			/* IO5.9 */
 			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09   0x26000060
 			/* IO5.10 */
-			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	  0x26000060
+			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	        0x26000060
 			/* IO5.11 */
 			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x26000060
 			
@@ -428,17 +428,17 @@ MUX7 = 0x38000000
 			/* 'LED_SDO' = IO4.20 */
 			// IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20      0x26000060           /* NOTE: set up as SPI2 'DOUT'! GPIO bit-bang NOT used!! */
 			
-			/***************** USB --> probably belongs in DTSI-file **********************/
+			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/
 			/* 'USB_EN' = IO1.28 */
-			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28  0x26000060
+			//IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28  0x26000060
 			/* 'USB_RESET' = IO3.13 */
-			IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13          0x26000060
+			//IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13          0x26000060
 			 
             /***************** LTE-modem --> probably belongs in DTSI-file **********************/
             /* 'nDisable_LTE_SHDN' ('nDISABLE'?) = IO2.0 */
 			//IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00    0x26000060
 			
-			/********************** NFC --> probably belongs in DTSI-file (??) NOT USED IN VER.1 !! *******************************/
+			/********************** NFC --> belongs in DTSI-file (??) IF used with a driver. NOT USED IN VER.1 !! *******************************/
 			/* 'NFC_POWER_TX' = IO1.29 */
 			IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29    0x26000060
 			/* 'POWER_ON_NFC' = IO1.30 */
