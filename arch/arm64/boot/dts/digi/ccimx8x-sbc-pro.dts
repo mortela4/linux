@@ -280,27 +280,13 @@
 	status = "okay";
 };
 
-&usb3phynop1 {
+
+&usbphy1 {
 	status = "okay";
 };
 
 
 /* USB_OTG2/USB_SS3 is NOT used! */
-/*
-&usbotg3 {
-	dr_mode = "host";
-	maximum-speed = "high-speed";
-	hnp-disable;
-	srp-disable;
-	adp-disable;
-	status = "okay";    // Originally - this was only setting here (enabling AFTER .dtsi-file loaded).
-};
-
-
-&usb3phynop1 {
-	status = "okay";
-};
-*/
 
 
 
@@ -332,9 +318,9 @@ MUX1 = 0x08000000
 MUX2 = 0x10000000
 MUX3 = 0x18000000
 MUX4 = 0x20000000 --> pinmux=4 : LSGPIO setting (if available)
-MUX5 = 0x28000000
-MUX6 = 0x30000000
-MUX7 = 0x38000000
+MUX5 = NA
+MUX6 = NA
+MUX7 = NA
 */
 &iomuxc {
 	pinctrl-names = "default";
@@ -418,33 +404,20 @@ MUX7 = 0x38000000
 			/* AC_ALARM_B = IO9.9 --> MCA_IO9 */
 			/* DC_ALARM_B = IO9.10 --> MCA_IO10 */
 			
-			/*************** MCP23018 GPIO-expander control --> probably belongs in DTSI-file *************************/
+			/*************** MCP23018 GPIO-expander control --> probably belongs in DTSI-file (TODO: where??) *************************/
 			/* RESET_MCP_io_expander = IO3.15 */
 			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15        0x26000060
 			
-			/***************** Tricolor-LED Control **********************/
-			/* 'LED_CLK' = IO4.19 */
-			// IMX8QXP_USDHC1_RESET_B_LSIO_GPIO4_IO19      0x26000060           /* NOTE: set up as SPI2 clock ('SCK')! GPIO bit-bang NOT used!! */
-			/* 'LED_SDO' = IO4.20 */
-			// IMX8QXP_USDHC1_VSELECT_LSIO_GPIO4_IO20      0x26000060           /* NOTE: set up as SPI2 'DOUT'! GPIO bit-bang NOT used!! */
-			
-			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/
-			/* 'USB_EN' = IO1.28 */
-			//IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28  0x26000060
-			/* 'USB_RESET' = IO3.13 */
-			//IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13          0x26000060
-			 
-            /***************** LTE-modem --> probably belongs in DTSI-file **********************/
-            /* 'nDisable_LTE_SHDN' ('nDISABLE'?) = IO2.0 */
-			//IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00    0x26000060
-			
-			/********************** NFC --> belongs in DTSI-file (??) IF used with a driver. NOT USED IN VER.1 !! *******************************/
+			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/			 
+            /***************** LTE-modem --> belongs in DTSI-file for same reason **********************/
+			/***************** Tricolor-LED Control --> belongs in DTSI-file (part of SPI2 setup) **********************/
+			/***************** NFC --> belongs in DTSI-file (??) IF used with a driver. NOT USED IN VER.1 !! *******************************/
 			/* 'NFC_POWER_TX' = IO1.29 */
-			IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29    0x26000060
+			// IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29    0x26000060
 			/* 'POWER_ON_NFC' = IO1.30 */
-			IMX8QXP_MIPI_DSI1_I2C0_SDA_LSIO_GPIO1_IO30    0x26000060
+			// IMX8QXP_MIPI_DSI1_I2C0_SDA_LSIO_GPIO1_IO30    0x26000060
 			/* 'NFC_IRQ_IN' = IO4.22 */
-			IMX8QXP_USDHC1_CD_B_LSIO_GPIO4_IO22           0x26000060
+			// IMX8QXP_USDHC1_CD_B_LSIO_GPIO4_IO22           0x26000060
 			/* 'NFC_IRQ_OUT' = MCA_IO1 = GPIO9_1 --> need NOT be part of DTS as long as userspace controls it! */
 		>;
 	};

@@ -124,18 +124,6 @@
 			//vin-supply = <&reg_3v3_ext>;	// NOTE: no other 3.3V-supply than the main 3.3V - no regulator in-between!!
 		};
 
-		/*
-		reg_3v3_usb_sw: regulator@8 {
-			compatible = "regulator-fixed";
-			reg = <8>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&pinctrl_reg_3v3_usb_sw>;
-			regulator-name = "3v3_usb_sw";
-			regulator-min-microvolt = <3300000>;
-			regulator-max-microvolt = <3300000>;
-			gpio = <&lsio_gpio4 5 GPIO_ACTIVE_LOW>;
-		};
-		*/
 	};
 
 };
@@ -158,41 +146,6 @@
 	status = "disabled";	// TODO: check pinctrl-def!!
 };
 
-
-/* NOTE: collides with CC8X-internal I2C0-interface usage --> must use another I2C-interface!
-// I2C0 connected to MPU6050 6-axis IMU, and HDC20xx RHT-sensor (humidity and temperature). 
-&i2c0 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	clock-frequency = <100000>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_lpi2c0>;
-	status = "disabled";
-
-	// TI HDC2010 humidity sensor connected to I2C3 bus on address=0x40 : 
-	humidity@40 {
-          compatible = "ti,hdc2010";
-          reg = <0x40>;
-      };
-	
-	// InvenSense MPU6050 IMU (acc+gyro 6-axis DOF). 'mount-matrix' is optional. IRQn-signal connected to GPIO0_19 --> use 0x68 and GPIO3_15 (from "EXP_I2C_IRQ_N") on SPC-PRO evkit! 
-	mpu6050: mpu6050@69 {
-		compatible = "invensense,mpu6050";
-		reg = <0x69>;
-		interrupt-parent = <&lsio_gpio0>;
-		interrupts = <19 IRQ_TYPE_EDGE_RISING>;
-		mount-matrix = "-0.984807753012208",  // x0 
-		               "0",                   // y0 
-		               "-0.173648177666930",  // z0 
-		               "0",                   // x1 
-		               "-1",                  // y1 
-		               "0",                   // z1 
-		               "-0.173648177666930",  // x2 
-		               "0",                   // y2 
-		               "0.984807753012208";   // z2 
-	};
-};
-*/
 
 
 /* I2C3 connected to MCP23018 GPIO-expander. */
@@ -403,30 +356,14 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usbotg1>;
 
-	vbus-supply = <&reg_3v3_usb_hub>;                       // Supply goes through VREG-driver - so pin-controls need NOT be referred directly here! (i.e. 'pinctrl_reg_3v3_usb_hub')
+	vbus-supply = <&reg_3v3_usb_hub>;                        // Supply goes through VREG-driver - so pin-controls need NOT be referred directly here! (i.e. 'pinctrl_reg_3v3_usb_hub')
 	fsl,reset-gpio = <&lsio_gpio3 13 GPIO_ACTIVE_LOW>;       // GPIO3_13 = "USB_RESET" to hub --> was GPIO1_3 on BaseUnit.
-	dr_mode = "host";                                       // NOTE: set to 'peripheral' if device-mode, or 'otg' if OTG-mode (i.e. dual-mode)!
-	//maximum-speed = "high-speed";                         // Typically NOT necessary to set ...
+	dr_mode = "host";                                        // NOTE: set to 'peripheral' if device-mode, or 'otg' if OTG-mode (i.e. dual-mode)!
+	maximum-speed = "high-speed";                            // Typically NOT necessary to set ...
 	disable-over-current;
 	status = "okay";
 };
 
-/* USB_OTG2/USB_SS3 --> "otg". NOT used for WICC:
-&usbotg3 {
-	dr_mode = "host";
-	// extcon = <&typec_ptn5110>;   // NOT used on BaseUnit!
-	maximum-speed = "high-speed";
-	hnp-disable;
-	srp-disable;
-	adp-disable;
-	status = "disabled";
-};
-
-// usbotg3 PHY 
-&usb3phynop1 {
-	vcc-supply = <&reg_3v3_usb_sw>; 
-};
-*/
 
 
 /*********************** Micro SD card ********************************/
@@ -438,7 +375,7 @@
 	bus-width = <4>;
 	no-1-8-v;
 	//cd-gpios = <&lsio_gpio4 22 GPIO_ACTIVE_HIGH>;   /* 'CardDetect' on USDHC1_CD_B is used for mPCIe-socket GPIO! */
-	non-removable;                                  /* NOTE: SDcard-slot on BaseUnit has neither 'CD'-pin, nor a release-latch, and is to be considered 'non-removable'! */
+	non-removable;                                    /* NOTE: SDcard-slot on BaseUnit has neither 'CD'-pin, nor a release-latch, and is to be considered 'non-removable'! */
 	status = "disabled";
 };
 
@@ -514,28 +451,19 @@
 		fsl,pins = <&piom1 15 0>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
 	};
 
-    /******************** USB ***********************/
+    /******************** USB (USBOTG1) ***********************/
     
 	pinctrl_reg_3v3_usb_hub: reg_3v3_usb_hub_grp {
 		fsl,pins = <
 			/* GPIO1_28 (MUX=ALT4) is USB hub power enable, 'USB_EN' (= 'USB_PWR_EN') */
-			//IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28		0x26000020              
+			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28		0x26000020              
 		>;
 	};
-
-    /*
-	pinctrl_reg_3v3_usb_sw: reg_3v3_usb_sw_grp {
-		fsl,pins = <
-			// GPIO4_5 USB3 switch power enable
-			MX8QXP_USB_SS3_TC2_LSIO_GPIO4_IO05	0x06000020   // NOT used for WICC!
-		>;
-	};
-	*/
 
 	pinctrl_usbotg1: usbotg1grp {
 		fsl,pins = <
 			/* USB hub reset (MUX=ALT4) is GPIO3_13. */
-			//IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13		0x26000020
+			IMX8QXP_QSPI0A_DQS_LSIO_GPIO3_IO13		0x26000020
 		>;
 	};
 
@@ -580,56 +508,6 @@
 			IMX8QXP_USDHC1_DATA3_CONN_USDHC1_DATA3	0x00000021
 		>;
 	};
-
-/*
-        TODO: check if these pins are in conflict with I2C-pad used for internal MCA-control!!
-        
-        	pinctrl_i2c0_mipi_lvds0: mipi_lvds0_i2c0_grp {
-		fsl,pins = <
-			IMX8QXP_MIPI_DSI0_I2C0_SCL_MIPI_DSI0_I2C0_SCL 0xc6000020
-			IMX8QXP_MIPI_DSI0_I2C0_SDA_MIPI_DSI0_I2C0_SDA 0xc6000020
-		>;
-	};
-
-	pinctrl_i2c0_lvds0_gpio: i2c0_lvds0_gpio_grp {
-		fsl,pins = <
-			IMX8QXP_MIPI_DSI0_I2C0_SCL_LSIO_GPIO1_IO25 0xc6000020
-			IMX8QXP_MIPI_DSI0_I2C0_SDA_LSIO_GPIO1_IO26 0xc6000020
-		>;
-	};
-
-
-	pinctrl_csi0_lpi2c0: csi0lpi2c0grp {
-		fsl,pins = <
-			IMX8QXP_MIPI_CSI0_I2C0_SCL_MIPI_CSI0_I2C0_SCL	0xc2000020
-			IMX8QXP_MIPI_CSI0_I2C0_SDA_MIPI_CSI0_I2C0_SDA	0xc2000020
-		>;
-	};
-
-	pinctrl_csi0_lpi2c0_gpio: csi0lpi2c0gpiogrp {
-		fsl,pins = <
-			IMX8QXP_MIPI_CSI0_I2C0_SCL_LSIO_GPIO3_IO05	0xc2000020
-			IMX8QXP_MIPI_CSI0_I2C0_SDA_LSIO_GPIO3_IO06	0xc2000020
-		>;
-	};
-*/
-
-/*
-	NOTE: both are unused!
-	pinctrl_touch_lvds0: touchgrplvds0 {
-	fsl,pins = <
-		// LVDS0 touch interrupt input:
-		IMX8QXP_QSPI0B_DATA2_LSIO_GPIO3_IO20	0x06000060
-	>;
-	};
-	
-	pinctrl_mipi: mipi {
-		fsl,pins = <
-			// Display ENABLE-signal(=no use???)
-			IMX8QXP_QSPI0B_DATA3_LSIO_GPIO3_IO21 0xC0000041
-		>;
-	};
-*/
 
 };
 
