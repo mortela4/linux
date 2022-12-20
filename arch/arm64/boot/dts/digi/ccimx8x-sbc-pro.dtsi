@@ -186,7 +186,7 @@
           compatible = "ti,hdc2010";
           reg = <0x40>;                                 /* TODO: double-check address!! */
           interrupt-parent = <&mca_gpio>;
-          interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. */
+          interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
       };
     
     icm42605@68 {                                       /* TODO: double-check address (MPU-6050 used 0x69) !! */
