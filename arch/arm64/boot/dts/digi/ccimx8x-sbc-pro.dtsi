@@ -77,7 +77,7 @@
 			};
 		};
 
-		/* TODO: set up corresponding to ELO-display!!  */
+		/* TODO: set up corresponding to ELO-display!! (same resolution = 1280 x 800 = XGA) */
 		panel-timing {
 			clock-frequency = <68930000>;
 			hactive = <1280>;
@@ -181,6 +181,22 @@
             	bias-pull-up;
         	};
 	};
+	
+	humidity@40 {
+          compatible = "ti,hdc2010";
+          reg = <0x40>;                                 /* TODO: double-check address!! */
+          interrupt-parent = <&mca_gpio>;
+          interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
+      };
+    
+    icm42605@68 {                                       /* TODO: double-check address (MPU-6050 used 0x69) !! */
+          compatible = "invensense,icm42605";
+          reg = <0x68>;
+          interrupt-parent = <&mca_gpio>;
+          interrupts = <2 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.2 is IRQ-pin input from ICM-42605 sensor. */
+          // vdd-supply = <&vdd>;                       /* No supply-control for Vdd to sensor. */
+          // vddio-supply = <&vddio>;                   /* No supply-control for Vdd_io to sensor. */
+        };
 };
 
 
