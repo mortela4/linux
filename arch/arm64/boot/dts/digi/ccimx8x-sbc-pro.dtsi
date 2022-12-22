@@ -442,13 +442,13 @@
 	/* TODO: check if vreg for PCIe is used at all! (WiFi internally??) */
 	pinctrl_reg_3v3_pcie: reg_3v3_pcie_grp {
 		/* Used to be GPIO4_22 - but this is used for 'NFC_IRQ_IN' signal. */
-		// pins = <&piom1 15 GPIO_ACTIVE_HIGH>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
+		pins = <&piom1 15 GPIO_ACTIVE_HIGH>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
 	};
 
 
 	pinctrl_reg_3v3_pcie_sleep: reg_3v3_pcie_sleep_grp {
 		/* Used to be GPIO4_22 (with different PAD-setting) - but this is used for 'NFC_IRQ_IN' signal. */
-		// pins = <&piom1 15 GPIO_ACTIVE_LOW>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
+		pins = <&piom1 15 GPIO_ACTIVE_LOW>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
 	};
 
     /******************** USB (USBOTG1) ***********************/
