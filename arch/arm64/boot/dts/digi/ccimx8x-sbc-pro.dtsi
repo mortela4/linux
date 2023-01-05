@@ -58,6 +58,7 @@
 				    100>;
 		default-brightness-level = <80>;
 		//power-supply = <&reg_5v_display>;			// TODO: check it up - is this REQUIRED??
+		enable-gpios = <&mca_gpio 4 GPIO_ACTIVE_HIGH>;
 		status = "okay";
 	};
 
@@ -189,9 +190,9 @@
           interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
       };
     
-    icm42605@68 {                                       /* TODO: double-check address (MPU-6050 used 0x69) !! */
+    icm42605@6a {                                       /* TODO: double-check address (MPU-6050 used 0x69) !! */
           compatible = "invensense,icm42605";
-          reg = <0x68>;
+          reg = <0x6a>;
           interrupt-parent = <&mca_gpio>;
           interrupts = <2 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.2 is IRQ-pin input from ICM-42605 sensor. */
           // vdd-supply = <&vdd>;                       /* No supply-control for Vdd to sensor. */
