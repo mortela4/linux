@@ -12,6 +12,8 @@
 	compatible = "fsl,imx8qxp-usdhc", "fsl,imx7d-usdhc";
 };
 
+/* NOTE: comment out both of these below if NOT using FEC - i.e. cabled GbEthernet!! */
+
 &fec1 {
 	compatible = "fsl,imx8qxp-fec", "fsl,imx8qm-fec";
 };

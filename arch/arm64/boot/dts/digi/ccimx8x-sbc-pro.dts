@@ -207,13 +207,14 @@
 };
 
 
-/* LPUART0 (not in use a.t.m. - but Tx/Rx-pads available). */
+/* LPUART0 (not in use a.t.m. - but Tx/Rx-pads available). NOTE: used as GPIOs in WICC-board rev.B !! */
+/*
 &lpuart0 {
-	/* Only TxD and RxD signals available - no RTC/CTS - so 2-wire interface used: */
+	// Only TxD and RxD signals available - no RTC/CTS - so 2-wire interface used: 
 	pinctrl-0 = <&pinctrl_lpuart0_2wires>;
 	status = "okay";
 };
-
+*/
 
 /* Console */
 &lpuart2 {
@@ -253,6 +254,7 @@
 
 
 /* Power LED on MCA_IO13 */
+/*
 &mca_led {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -266,7 +268,7 @@
 		retain-state-suspended;
 	};
 };
-
+*/
 
 &irqsteer_csi0 {
 	status = "okay";
@@ -393,12 +395,27 @@ MUX7 = NA
 			/* IO5.9 */
 			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09   0x20000040
 			/* IO5.10 */
-			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	        0x20000040
+			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	  0x20000040
 			/* IO5.11 */
 			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x20000040
 			
+			/******************** Cable-Lock Motor Control **********************/
+			/* IO1.21 = "Control_Motor_B_lock" */
+			IMX8QXP_UART0_TX_ADMA_UART0_RX                  0x20000040
+			/* IO1.22 = "Control_Motor_A_lock" */
+			IMX8QXP_UART0_TX_ADMA_UART0_TX                  0x20000040
+			
+			/* IO4.22 = "Control_Motor_A_unlock" */
+			IMX8QXP_USDHC1_CD_B                             0x20000040
+			
+			/* IO1.25 = "Control_Motor_B_unlock" */
+			IMX8QXP_MIPI_DSI0_I2C0_SCL                      0x20000040		
+			/* IO1.26 = signal 'S3_1' */
+			IMX8QXP_MIPI_DSI0_I2C0_SDA                      0x20000040
+			
+			
 			/*************** EXT-outlet Relay control ******************/
-            /* 'S_Ex_contact_control' = IO1.31 */
+                       /* 'S_Ex_contact_control' = IO1.31 */
 			IMX8QXP_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO31      0x20000040
 			
 			/*************** Board sensors --> probably belongs in DTSI-file *************************/
@@ -406,13 +423,13 @@ MUX7 = NA
 			/* INT_TEMP = IO9.3 --> MCA_IO3 */
 			
 			/*************** Backlight controls --> probably belongs in DTSI-file *************************/
-			/* BACKLIGHT_FAULT = IO9.4 --> MCA_IO4 */
+			/* BACKLIGHT_ENABLE = IO9.4 --> MCA_IO4 */
 			    
 			/*************** Outlet_A alarms *************************/
 			/* AC_ALARM_A = IO9.9 --> MCA_IO9 */
 			/* DC_ALARM_A = IO9.10 --> MCA_IO10 */
 			
-            /*************** Outlet_B alarms *************************/
+                       /*************** Outlet_B alarms *************************/
 			/* AC_ALARM_B = IO9.9 --> MCA_IO9 */
 			/* DC_ALARM_B = IO9.10 --> MCA_IO10 */
 			
@@ -420,9 +437,12 @@ MUX7 = NA
 			/* RESET_MCP_io_expander = IO3.15 */
 			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15        0x26000060
 			
-			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/			 
-            /***************** LTE-modem --> belongs in DTSI-file for same reason **********************/
+			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/	
+					 
+                       /***************** LTE-modem --> belongs in DTSI-file for same reason **********************/
+                       
 			/***************** Tricolor-LED Control --> belongs in DTSI-file (part of SPI2 setup) **********************/
+			
 			/***************** NFC --> belongs in DTSI-file (??) IF used with a driver. NOT USED IN VER.1 !! *******************************/
 			/* 'NFC_POWER_TX' = IO1.29 */
 			// IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29    0x26000060

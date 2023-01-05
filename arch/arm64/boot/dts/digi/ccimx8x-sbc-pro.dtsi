@@ -273,7 +273,7 @@
 
 /********************************** Serial Interfaces (I2C, SPI, UART) **************************************/
 
-/* LPSPI2 - used for Tricolor-LED: */
+/* LPSPI2 (becomes 'spidev.0') - used for Tricolor-LED: */
 &lpspi2 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -285,7 +285,7 @@
 };
 
 
-/* LPSPI3 - used for NFC: */
+/* LPSPI3 (becomes 'spidev.1') - used for NFC: */
 &lpspi3 {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -297,13 +297,15 @@
 };
 
 
-/* LPUART0 on expansion header */
+/* LPUART0 on expansion header of SBC-PRO --> used as GPIOs on WICC-board rev.B !! */
+/*
 &lpuart0 {
-	/* RTS/CTS lines multiplexed with CAN0 */
+	// RTS/CTS lines multiplexed with CAN0 
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lpuart0_2wires>;	// NOTE: only TxD and RxD signals available!
 	status = "disabled";
 };
+*/
 
 
 /* Console */
@@ -416,12 +418,14 @@
 		>;
 	};
 	
+	/*
 	pinctrl_lpuart0_2wires: lpuart0grp_2wires {
 		fsl,pins = <
-			IMX8QXP_UART0_TX_ADMA_UART0_TX		0x06000020	/* Pinmux = 0. */
-			IMX8QXP_UART0_RX_ADMA_UART0_RX		0x06000020	/* Pinmux = 0. */
+			IMX8QXP_UART0_TX_ADMA_UART0_TX		0x06000020	// Pinmux = 0. 
+			IMX8QXP_UART0_RX_ADMA_UART0_RX		0x06000020	// Pinmux = 0. 
 		>;
 	};
+	*/
 
 	pinctrl_lpuart2: lpuart2grp {
 		fsl,pins = <
