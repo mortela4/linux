@@ -400,18 +400,18 @@ MUX7 = NA
 			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x20000040
 			
 			/******************** Cable-Lock Motor Control **********************/
-			/* IO1.21 = "Control_Motor_B_lock" */
-			IMX8QXP_UART0_TX_ADMA_UART0_RX                  0x20000040
-			/* IO1.22 = "Control_Motor_A_lock" */
-			IMX8QXP_UART0_TX_ADMA_UART0_TX                  0x20000040
+			/* IO1.21 = "Control_Motor_B_lock" --> pin 'IMX8QXP_UART0_RX' */
+			IMX8QXP_UART0_RX_LSIO_GPIO1_IO21                0x20000040
+			/* IO1.22 = "Control_Motor_A_lock"  --> pin 'IMX8QXP_UART0_TX' */
+			IMX8QXP_UART0_TX_LSIO_GPIO1_IO22                0x20000040
 			
-			/* IO4.22 = "Control_Motor_A_unlock" */
-			IMX8QXP_USDHC1_CD_B                             0x20000040
+			/* IO4.22 = "Control_Motor_A_unlock" --> pin 'IMX8QXP_USDHC1_CD_B' */
+			IMX8QXP_USDHC1_CD_B_LSIO_GPIO4_IO22             0x20000040
 			
-			/* IO1.25 = "Control_Motor_B_unlock" */
-			IMX8QXP_MIPI_DSI0_I2C0_SCL                      0x20000040		
-			/* IO1.26 = signal 'S3_1' */
-			IMX8QXP_MIPI_DSI0_I2C0_SDA                      0x20000040
+			/* IO1.25 = "Control_Motor_B_unlock" --> pin 'IMX8QXP_MIPI_DSI0_I2C0_SCL' */
+			IMX8QXP_MIPI_DSI0_I2C0_SCL_LSIO_GPIO1_IO25      0x20000040
+			/* IO1.26 = signal "EN_Locking_Motor_Battery" --> pin 'IMX8QXP_MIPI_DSI0_I2C0_SDA' */
+			IMX8QXP_MIPI_DSI0_I2C0_SDA_LSIO_GPIO1_IO26      0x20000040
 			
 			
 			/*************** EXT-outlet Relay control ******************/
@@ -435,7 +435,7 @@ MUX7 = NA
 			
 			/*************** MCP23018 GPIO-expander control --> probably belongs in DTSI-file (TODO: where??) *************************/
 			/* RESET_MCP_io_expander = IO3.15 */
-			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15        0x26000060
+			IMX8QXP_QSPI0A_SS1_B_LSIO_GPIO3_IO15             0x26000060
 			
 			/***************** USB --> belongs in DTSI-file as they are associated w. specific (USB-)drivers **********************/	
 					 
