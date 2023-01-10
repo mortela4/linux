@@ -413,6 +413,9 @@ MUX7 = NA
 			/* IO1.26 = signal "EN_Locking_Motor_Battery" --> pin 'IMX8QXP_MIPI_DSI0_I2C0_SDA' */
 			// IMX8QXP_MIPI_DSI0_I2C0_SDA_LSIO_GPIO1_IO26      0x20000040                           // NOTE: no can do - using pin as GPIO removes connection i.MX8X<-->MCA !!
 			
+			/* IO1.28 = "Lock_state_A" --> pin 'IMX8QXP_MIPI_DSI0_GPIO0_01' */
+			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28	0x20000040
+			/* IO1.xx = 'Lock_state_B' --> ??? */
 			
 			/*************** EXT-outlet Relay control ******************/
                        /* 'S_Ex_contact_control' = IO1.31 */
