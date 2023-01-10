@@ -414,8 +414,15 @@ MUX7 = NA
 			// IMX8QXP_MIPI_DSI0_I2C0_SDA_LSIO_GPIO1_IO26      0x20000040                           // NOTE: no can do - using pin as GPIO removes connection i.MX8X<-->MCA !!
 			
 			/* IO1.28 = "Lock_state_A" --> pin 'IMX8QXP_MIPI_DSI0_GPIO0_01' */
-			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28	0x20000040
-			/* IO1.xx = 'Lock_state_B' --> ??? */
+			IMX8QXP_MIPI_DSI0_GPIO0_01_LSIO_GPIO1_IO28	    0x20000040
+			/* IO1.29 = 'Lock_state_B' --> pin 'IMX8QXP_MIPI_DSI0_GPIO0_01' */
+			IMX8QXP_MIPI_DSI1_I2C0_SCL_LSIO_GPIO1_IO29	    0x20000040
+			
+			
+			/***************** BatteryCharger Control ******************/
+			/* IO1.30 = 'POWER_ON_Charger' --> pad 'IMX8QXP_MIPI_DSI1_I2C0_SDA' (pin22 on module) */
+			IMX8QXP_MIPI_DSI1_I2C0_SDA_LSIO_GPIO1_IO30      0x20000040
+			
 			
 			/*************** EXT-outlet Relay control ******************/
                        /* 'S_Ex_contact_control' = IO1.31 */
