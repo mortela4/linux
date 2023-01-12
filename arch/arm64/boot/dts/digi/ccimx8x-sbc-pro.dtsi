@@ -43,7 +43,7 @@
 	
 	lvds_backlight0: lvds_backlight@0 {
 		compatible = "pwm-backlight";
-		pwms = <&pwm_mipi_lvds0 0 100000 0>;
+		pwms = <&pwm_mipi_lvds0 0 100000 0>;			// ch#0 of PWM-controller 'pwm_mipi_lvds0', w. period=100000ns=100us --> 10kHz (carrier) frequency. See: "boot/dts/freescale/imx8qxp-ss-lvds.dtsi" */
 
 		brightness-levels = < 0  1  2  3  4  5  6  7  8  9
 				     10 11 12 13 14 15 16 17 18 19
@@ -100,7 +100,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		/* PCIe mini card regulator, disabled by default */
+		/* PCIe mini card regulator, disabled by default. NOTE: only on rev.'A' HW! Rev.'B' use NO regulator for mPCIe-card slot!! (direct 3.9V input) */
 		reg_3v3_pcie: regulator@6 {
 			compatible = "regulator-fixed";
 			reg = <6>;
@@ -190,7 +190,7 @@
           interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
       };
     
-    icm426xx_imu@6a {                                       /* TODO: double-check address (MPU6050 used 0x69, ICM42605 seem to use 0x6A) !! */
+    lsm6dsox_imu@6a {                                       /* TODO: double-check address (MPU6050 used 0x69, ICM42605 seem to use 0x6A) !! */
           compatible = "st,lsm6dsox";                        /* WAS: "invensense,icm42605" - as ICM42605 was supposed to be used ... */
           reg = <0x6a>;
           interrupt-parent = <&mca_gpio>;
@@ -234,7 +234,7 @@
 
 &ldb1 {
 	pinctrl-names = "default";
-	//pinctrl-0 = <&pinctrl_lvds0>;     // NOTE: not used!!
+	pinctrl-0 = <&pinctrl_lvds0>;     // NOTE: used!!
 	status = "disabled";
 
 	lvds0: lvds-channel@0 {
@@ -431,6 +431,14 @@
 		fsl,pins = <
 			IMX8QXP_UART2_TX_ADMA_UART2_TX	0x06000020
 			IMX8QXP_UART2_RX_ADMA_UART2_RX	0x06000020
+		>;
+	};
+
+	
+	pinctrl_lvds0: lvds0grp {
+	fsl,pins = <
+		/* LVDS0 PWM backlight */
+		IMX8QXP_MIPI_DSI0_GPIO0_00_MIPI_DSI0_PWM0_OUT	0x00000020
 		>;
 	};
 
