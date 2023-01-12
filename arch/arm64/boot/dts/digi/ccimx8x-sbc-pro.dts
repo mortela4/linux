@@ -290,10 +290,6 @@
 
 /* USB_SS3 is NOT used! (not on castellated pads) --> but name is used here (usbotg3) because USB_SS3 and USB_OTG2 is part of same USB (host-)controller! */
 
-&usb3phynop1 {
-	status = "okay";
-};
-
 &usbotg3 {
 	dr_mode = "host";
 	maximum-speed = "high-speed";                            // Typically NOT necessary to set ... (but, connected to LTE-modem on mPCIe-slot, that anyway do NOT support USB3 SuperSpeed ...).
@@ -301,7 +297,9 @@
 	status = "okay";
 };
 
-
+&usb3phynop1 {
+	status = "okay";
+};
 
 
 /************************** Micro SD card ***************************/

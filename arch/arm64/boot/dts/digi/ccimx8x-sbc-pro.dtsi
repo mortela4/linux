@@ -190,8 +190,8 @@
           interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
       };
     
-    icm42605@6a {                                       /* TODO: double-check address (MPU-6050 used 0x69) !! */
-          compatible = "invensense,icm42605";
+    icm426xx_imu@6a {                                       /* TODO: double-check address (MPU6050 used 0x69, ICM42605 seem to use 0x6A) !! */
+          compatible = "st,lsm6dsox";                        /* WAS: "invensense,icm42605" - as ICM42605 was supposed to be used ... */
           reg = <0x6a>;
           interrupt-parent = <&mca_gpio>;
           interrupts = <2 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.2 is IRQ-pin input from ICM-42605 sensor. */
@@ -460,16 +460,16 @@
 		>;
 	};
 
-	/* TODO: check if vreg for PCIe is used at all! (WiFi internally??) */
+	/* NOTE: check if vreg for PCIe is used at all! (WiFi internally??) */
 	pinctrl_reg_3v3_pcie: reg_3v3_pcie_grp {
-		/* Used to be GPIO4_22 - but this is used for 'NFC_IRQ_IN' signal. */
-		pins = <&piom1 15 GPIO_ACTIVE_HIGH>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
+		/* Used to be GPIO4_22 - but this is used for 'NFC_IRQ_IN' signal. NOT USED on rev.'B' HW! (3.9V supply connected at all times ...) */
+		//pins = <&piom1 15 GPIO_ACTIVE_HIGH>;   /* Instead use GPIO-expander pin GPB7 = IO10_15 --> active HIGH */
 	};
 
 
 	pinctrl_reg_3v3_pcie_sleep: reg_3v3_pcie_sleep_grp {
-		/* Used to be GPIO4_22 (with different PAD-setting) - but this is used for 'NFC_IRQ_IN' signal. */
-		pins = <&piom1 15 GPIO_ACTIVE_LOW>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
+		/* Used to be GPIO4_22 (with different PAD-setting) - but this is used for 'NFC_IRQ_IN' signal.  NOT USED on rev.'B' HW! (3.9V supply connected at all times ...) */
+		//pins = <&piom1 15 GPIO_ACTIVE_LOW>;   /* Instead use GPIO-expander pin GPB7 = IO10_15--> active LOW */
 	};
 
     /******************** USB (USBOTG1) ***********************/

@@ -4,6 +4,7 @@
  *	Richard Zhu <hongxing.zhu@nxp.com>
  */
 
+/* TODO: check usage of these clock-outputs!! Not registered correctly??? */
 &hsio_subsys {
 	phyx1_lpcg: clock-controller@5f090000 {
 		compatible = "fsl,imx8qxp-lpcg";
