@@ -120,9 +120,9 @@
 			regulator-name = "3v3_usb_hub";
 			regulator-min-microvolt = <3300000>;
 			regulator-max-microvolt = <3300000>;
-			gpio = <&lsio_gpio1 28 GPIO_ACTIVE_HIGH>;
+			gpio = <&lsio_gpio3 16 GPIO_ACTIVE_HIGH>;       /* Moved from GPIO1.28 on rev.'A' HW */
 			enable-active-high;
-			//vin-supply = <&reg_3v3_ext>;	// NOTE: no other 3.3V-supply than the main 3.3V - no regulator in-between!!
+			//vin-supply = <&reg_3v3_ext>;	                // NOTE: no other 3.3V-supply than the main 3.3V - no regulator in-between!!
 		};
 
 	};
@@ -376,8 +376,8 @@
 	pinctrl-0 = <&pinctrl_usbotg1>;
 
 	vbus-supply = <&reg_3v3_usb_hub>;                        // Supply goes through VREG-driver - so pin-controls need NOT be referred directly here! (i.e. 'pinctrl_reg_3v3_usb_hub')
-	//fsl,reset-gpio = <&lsio_gpio3 13 GPIO_ACTIVE_LOW>;       // GPIO3_13 = "USB_RESET" to hub on rev.'A' HW. --> was GPIO1_3 on BaseUnit.
-	
+	//fsl,reset-gpio = <&lsio_gpio3 13 GPIO_ACTIVE_LOW>;     // GPIO3_13 = "USB_RESET" to hub on rev.'A' HW. --> was GPIO1_3 on BaseUnit.
+	fsl,reset-gpio = <&lsio_gpio1 31 GPIO_ACTIVE_LOW>;       // Moved to GPIO1_31 on rev.'B' HW.    
 	dr_mode = "host";                                        // NOTE: set to 'peripheral' if device-mode, or 'otg' if OTG-mode (i.e. dual-mode)!
 	maximum-speed = "high-speed";                            // Typically NOT necessary to set ...
 	disable-over-current;
