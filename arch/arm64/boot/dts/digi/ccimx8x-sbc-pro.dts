@@ -341,29 +341,41 @@ MUX7 = NA
 	/* Expansion Connector */
 	pinctrl_expansion: expansiongrp {
 		fsl,pins = <
-			/************ MUX0 (ADC0) select-signals **************/
-			/* IO4.31 */
-			IMX8QXP_ENET0_RGMII_TXD0_LSIO_GPIO4_IO31    0x20000040
-			/* IO5.0 */
-			IMX8QXP_ENET0_RGMII_TXD1_LSIO_GPIO5_IO00    0x26000040
+			
 			/* IO5.1 */
 			IMX8QXP_ENET0_RGMII_TXD2_LSIO_GPIO5_IO01    0x26000040
 			/* IO5.2 */
 			IMX8QXP_ENET0_RGMII_TXD3_LSIO_GPIO5_IO02    0x26000040
 			
-			/************ MUX1 (ADC1) select-signals **************/
-			/* IO4.29 */
+			
+			/************ MUX1 : 'V_sensing_multiplexer' (ADC0) select-signals **************/
+			/* 'S0' = IO4.29 */
 			IMX8QXP_ENET0_RGMII_TXC_LSIO_GPIO4_IO29         0x26000040
-			/* IO4.30 */
+			/* 'S1' = IO4.30 */
 			IMX8QXP_ENET0_RGMII_TX_CTL_LSIO_GPIO4_IO30      0x26000040
-			/* IO5.4 */
-			IMX8QXP_ENET0_RGMII_RX_CTL_LSIO_GPIO5_IO04      0x26000040
-			/* IO5.3 */
-			IMX8QXP_ENET0_RGMII_RXC_LSIO_GPIO5_IO03         0x26000040
+			/* 'S2' = IO5.0 */
+			IMX8QXP_ENET0_RGMII_TXD1_LSIO_GPIO5_IO00    0x26000040
+			/* 'S3' = IO4.31 */
+			IMX8QXP_ENET0_RGMII_TXD0_LSIO_GPIO4_IO31    0x20000040
+			
+			/************ MUX0 : 'Analog_multiplexer_add' (ADC1) select-signals **************/
+			/* 'S0' = IO5.8 */
+			IMX8QXP_ENET0_RGMII_RXD3_LSIO_GPIO5_IO08        0x20000040
+            /* 'S1' = IO5.9 */
+			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09   0x20000040
+			/* 'S2' = IO5.11 */
+			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x20000040
+			/* 'S3' = IO5.10 */
+			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	  0x20000040
+			
+			
+			
+			
 			
 			/************ Outlet_A Relays ************************/
 			/* IO3.16 */
-			IMX8QXP_QSPI0A_SCLK_LSIO_GPIO3_IO16             0x20000040
+			// IMX8QXP_QSPI0A_SCLK_LSIO_GPIO3_IO16             0x20000040       // Used for "USB_RESET" on rev.'B' HW.
+			
 			/* IO1.19 */
 			IMX8QXP_FLEXCAN2_RX_LSIO_GPIO1_IO19             0x20000040
 			/* IO1.20 */
@@ -380,6 +392,11 @@ MUX7 = NA
 			IMX8QXP_MCLK_IN0_LSIO_GPIO0_IO19                0x20000040
 			
 			/**************** Outlet_B Relays ********************/
+			/* pin#102: 'S_R1_B' = IO5.3 */
+			IMX8QXP_ENET0_RGMII_RXC_LSIO_GPIO5_IO03         0x26000040
+			/* pin#103: 'S_R1-N_B' = IO5.4 */
+			IMX8QXP_ENET0_RGMII_RX_CTL_LSIO_GPIO5_IO04      0x26000040
+			
 			/* IO3.14 */
 			IMX8QXP_QSPI0A_SS0_B_LSIO_GPIO3_IO14            0x20000040
 			/* IO5.5 */
@@ -388,14 +405,9 @@ MUX7 = NA
 			IMX8QXP_ENET0_RGMII_RXD1_LSIO_GPIO5_IO06        0x20000040
 			/* IO5.7 = signal 'S3_1' */
 			IMX8QXP_ENET0_RGMII_RXD2_LSIO_GPIO5_IO07        0x20000040
-			/* IO5.8 */
-			IMX8QXP_ENET0_RGMII_RXD3_LSIO_GPIO5_IO08        0x20000040
-			/* IO5.9 */
-			IMX8QXP_ENET0_REFCLK_125M_25M_LSIO_GPIO5_IO09   0x20000040
-			/* IO5.10 */
-			IMX8QXP_ENET0_MDIO_LSIO_GPIO5_IO10    	  0x20000040
-			/* IO5.11 */
-			IMX8QXP_ENET0_MDC_LSIO_GPIO5_IO11               0x20000040
+			
+			
+			
 			
 			/******************** Cable-Lock Motor Control **********************/
 			/* IO1.21 = "Control_Motor_B_lock" --> pin 'IMX8QXP_UART0_RX' */
