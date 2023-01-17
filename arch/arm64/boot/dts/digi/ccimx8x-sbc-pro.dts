@@ -435,8 +435,8 @@ MUX7 = NA
 			
 			
 			/*************** EXT-outlet Relay control ******************/
-                       /* 'S_Ex_contact_control' = IO1.31 */
-			IMX8QXP_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO31      0x20000040
+                       /* 'S_Ex_contact_control' = IO1.31 --> not used on rev.'B'!! (belongs to pingrp. 'pinctrl_usb_3v3_reg' on re4v.'B') */
+			// IMX8QXP_MIPI_DSI1_GPIO0_00_LSIO_GPIO1_IO31      0x20000040		// Do NOT use! This pad is used for "USB_PWR_EN" signal on rev.'B' HW!!
 			
 			/*************** Board sensors --> probably belongs in DTSI-file *************************/
 			/* INT_ACC = IO9.2 --> MCA_IO2 */
