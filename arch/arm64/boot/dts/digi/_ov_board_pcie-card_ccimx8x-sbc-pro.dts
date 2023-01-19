@@ -46,9 +46,10 @@
 			pinctrl-names = "default", "sleep";
 			pinctrl-0 = <&pinctrl_reg_3v3_pcie>, <&pinctrl_pcieb_mini_card>;
 			pinctrl-1 = <&pinctrl_reg_3v3_pcie_sleep>;
-			reset-gpio = <&lsio_gpio4 21 GPIO_ACTIVE_LOW>; /* PCIE_RESET_N --> changed from GPIO3_16 to GPIO4_21 !! */
-			disable-gpio = <&lsio_gpio2 0 GPIO_ACTIVE_HIGH>; /* PCIE_DIS_N --> changed from GPIO0_30 to GPIO2_00 !! */
-			vpcie-supply = <&reg_3v3_pcie>;
+			reset-gpio = <&lsio_gpio4 21 GPIO_ACTIVE_LOW>; 	/* PCIE_RESET_N --> changed from GPIO3_16 to GPIO4_21 !! */
+			disable-gpio = <&lsio_gpio2 0 GPIO_ACTIVE_HIGH>; 	/* PCIE_DIS_N --> changed from GPIO0_30 to GPIO2_00 !! */
+			//wake-gpio = <&lsio_gpio0 1 GPIO_ACTIVE_LOW>; 		/* PCIE_WAKE_N --> GPIO0_01 (>2sec LOW-pulse for Telit LE910C !!) NOTE: not controlled by driver! Using (userspace-)script instead to toggle GPIO!! */
+			vpcie-supply = <&reg_3v3_pcie>;		
 			status = "okay";
 		};
 	};

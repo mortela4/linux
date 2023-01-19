@@ -188,16 +188,16 @@
           reg = <0x40>;                                 /* TODO: double-check address!! */
           interrupt-parent = <&mca_gpio>;
           interrupts = <3 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.3 is IRQ-pin input from HDC2010 sensor. (should this be 'interrupt-gpios' ??*/
-      };
+       };
     
-    lsm6dsox_imu@6a {                                       /* TODO: double-check address (MPU6050 used 0x69, ICM42605 seem to use 0x6A) !! */
+       lsm6dsox_imu@6a {                                       /* TODO: double-check address (MPU6050 used 0x69, ICM42605 seem to use 0x6A) !! */
           compatible = "st,lsm6dsox";                        /* WAS: "invensense,icm42605" - as ICM42605 was supposed to be used ... */
           reg = <0x6a>;
           interrupt-parent = <&mca_gpio>;
           interrupts = <2 IRQ_TYPE_EDGE_FALLING>;       /* MCA_GPIO.2 is IRQ-pin input from ICM-42605 sensor. */
           // vdd-supply = <&vdd>;                       /* No supply-control for Vdd to sensor. */
           // vddio-supply = <&vddio>;                   /* No supply-control for Vdd_io to sensor. */
-        };
+       };
 };
 
 
@@ -463,7 +463,7 @@
 			/* PCIE_RESET_N */
 			IMX8QXP_USDHC1_WP_LSIO_GPIO4_IO21		0x26000021    /* GPIO4_21 in ALT4-mode --> unchanged from BaseUnit design. */
 			/* PCIE_DIS_N */
-			IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00	0x26000021     /* Was: 0x26000061. GPIO2_0 in ALT4-mode --> unchanged from BaseUnit design. */
+			IMX8QXP_MIPI_DSI1_GPIO0_01_LSIO_GPIO2_IO00	0x26000021     /* GPIO2_0 in ALT4-mode --> unchanged from BaseUnit design. */
 			/* PCIE_WAKE_N --> */
 			IMX8QXP_SCU_GPIO0_01_SCU_GPIO0_IO01		0x04000021     /* GPIO0_1 in ALT0-mode --> unchanged from BaseUnit design. */
 		>;
